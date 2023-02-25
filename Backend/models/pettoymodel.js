@@ -44,8 +44,17 @@ const petToySchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  ratings: {
+    type: Number,
+    default: 0,
+  },
   reviews: [
     {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+        required: true,
+      },
       name: {
         type: String,
         required: true,
@@ -60,6 +69,11 @@ const petToySchema = new mongoose.Schema({
       },
     },
   ],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+  },
 
   createdAt: {
     type: Date,
