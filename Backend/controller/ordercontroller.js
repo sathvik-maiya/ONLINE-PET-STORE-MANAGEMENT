@@ -1,5 +1,4 @@
 const Order = require("../models/ordermodel");
-const Pets = require("../models/petsmodel");
 const ErrorHandler = require("../utils/errorhandler");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 
@@ -90,12 +89,6 @@ exports.updateorder = catchasyncerrors(async (req, res, next) => {
     return next(new ErrorHandler("You have already delivered this order", 400));
   }
 
-  if (req.body.status === "Shipped") {
-    order.orderItems.forEach(async (o) => {
-      await updateStock(o.product, o.quantity);
-    });
-  }
-
   order.orderStatus = req.body.status;
 
   if (req.body.status === "Delivered") {
@@ -108,13 +101,6 @@ exports.updateorder = catchasyncerrors(async (req, res, next) => {
   });
 });
 
-async function updateStock(id, quantity) {
-  const product = await Pets.findById(id);
-
-  product.stock -= quantity;
-
-  await product.save({ validateBeforeSave: false });
-}
 
 // delete Order -- Admin
 exports.deleteorder = catchasyncerrors(async (req, res, next) => {

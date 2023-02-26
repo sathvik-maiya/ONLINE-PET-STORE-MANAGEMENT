@@ -1,4 +1,4 @@
-const Pettoy =  require("../models/petsmodel.js");
+const Pettoy =  require("../models/Pettoymodel.js");
 const ErrorHandler = require("../utils/errorhandler");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 

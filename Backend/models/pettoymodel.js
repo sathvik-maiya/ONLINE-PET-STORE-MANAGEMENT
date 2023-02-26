@@ -1,27 +1,22 @@
 const mongoose = require("mongoose");
-const petSchema = new mongoose.Schema({
+const petToySchema = new mongoose.Schema({
+  Toyname: {
+    type: String,
+    required: [true, "please enter pettoy name"],
+  },
+  brand: {
+    type: String,
+    required: [true, "please enter pettoy brand"],
+  },
   petClass: {
     type: String,
-    required: [true, "please enter pet class"],
-  },
-  breed: {
-    type: String,
-    required: [true, "please enter breed name"],
-    trim: true,
+    required: [true, "please enter pettoy class"],
   },
   description: {
     type: String,
-    required: [true, "please enter pet description"],
+    required: [true, "please enter petmedicine description"],
   },
-  price: {
-    type: Number,
-    required: [true, "please enter pet price"],
-    maxLength: [8, "price cannot exceed 8 figures"],
-  },
-  ratings: {
-    type: Number,
-    default: 0,
-  },
+
   images: [
     {
       public_id: {
@@ -34,7 +29,16 @@ const petSchema = new mongoose.Schema({
       },
     },
   ],
+  price: {
+    type: Number,
+    required: [true, "please enter price"],
+    maxlength: [8, "price cannot exceed 8 figures"],
+  },
   numofreviews: {
+    type: Number,
+    default: 0,
+  },
+  ratings: {
     type: Number,
     default: 0,
   },
@@ -64,9 +68,12 @@ const petSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
+
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
-module.exports = mongoose.model("pet", petSchema);
+  
+  
+  module.exports = mongoose.model('PetToy', petToySchema);

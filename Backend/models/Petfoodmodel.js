@@ -1,26 +1,20 @@
 const mongoose = require("mongoose");
-const petSchema = new mongoose.Schema({
+const petfoodSchema = new mongoose.Schema({
+  foodname: {
+    type: String,
+    required: [true, "please enter food name"],
+  },
+  brand: {
+    type: String,
+    required: [true, "please enter petfood brand name"],
+  },
   petClass: {
     type: String,
-    required: [true, "please enter pet class"],
-  },
-  breed: {
-    type: String,
-    required: [true, "please enter breed name"],
-    trim: true,
+    required: [true, "please enter petfood class"],
   },
   description: {
     type: String,
-    required: [true, "please enter pet description"],
-  },
-  price: {
-    type: Number,
-    required: [true, "please enter pet price"],
-    maxLength: [8, "price cannot exceed 8 figures"],
-  },
-  ratings: {
-    type: Number,
-    default: 0,
+    required: [true, "please enter petfood description"],
   },
   images: [
     {
@@ -34,7 +28,20 @@ const petSchema = new mongoose.Schema({
       },
     },
   ],
+  flavor: {
+    type: String,
+    default: "chicken",
+  },
+  price: {
+    type: Number,
+    required: [true, "please enter price"],
+    maxlength: [8, "price cannot exceed 8 figures"],
+  },
   numofreviews: {
+    type: Number,
+    default: 0,
+  },
+  ratings: {
     type: Number,
     default: 0,
   },
@@ -69,4 +76,6 @@ const petSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-module.exports = mongoose.model("pet", petSchema);
+
+  
+  module.exports = mongoose.model('petfood', petfoodSchema);
