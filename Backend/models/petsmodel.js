@@ -6,8 +6,22 @@ const petSchema = new mongoose.Schema({
   },
   breed: {
     type: String,
-    required: [true, "please enter breed name"],
     trim: true,
+  },
+  foodname: {
+    type: String,
+  },
+  medname: {
+    type: String,
+  },
+  Toyname: {
+    type: String,
+  },
+  brand: {
+    type: String,
+  },
+  dosage: {
+    type: String,
   },
   description: {
     type: String,

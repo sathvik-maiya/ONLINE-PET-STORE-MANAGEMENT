@@ -1,4 +1,4 @@
-const Petmedicine = require("../models/Petmedicinemodel.js");
+const Petmedicine =  require("../models/petsmodel.js");
 const ErrorHandler = require("../utils/errorhandler");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 
