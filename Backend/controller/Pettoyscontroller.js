@@ -1,16 +1,41 @@
 const Pettoy =  require("../models/Pettoymodel.js");
 const ErrorHandler = require("../utils/errorhandler");
+const cloudinary = require("cloudinary");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 
 
 // Create pettoy -- Admin
 exports.createpettoy = catchasyncerrors(async (req, res, next) => {
-    req.body.user = req.user.id;
-  const pettoy = await Pettoy.create(req.body);
-  res.status(201).json({
-    success: true,
- pettoy,
-  });
+ let images = [];
+
+ if (typeof req.body.images === "string") {
+   images.push(req.body.images);
+ } else {
+   images = req.body.images;
+ }
+
+ const imagesLinks = [];
+
+ for (let i = 0; i < images.length; i++) {
+   const result = await cloudinary.v2.uploader.upload(images[i], {
+     folder: "pettoy",
+   });
+
+   imagesLinks.push({
+     public_id: result.public_id,
+     url: result.secure_url,
+   });
+ }
+
+ req.body.images = imagesLinks;
+ req.body.user = req.user.id;
+
+const pettoy = await Pettoy.create(req.body);
+
+ res.status(201).json({
+   success: true,
+   pettoy,
+ });
 });
 
 //Get all petfood
@@ -41,14 +66,44 @@ exports.updatepettoydetails = catchasyncerrors(async (req, res, next) => {
   if (!pettoy) {
     return next(new ErrorHandler("pettoy not found", 404));
   }
- pettoy = await Pettoy.findByIdAndUpdate(req.params.id, req.body, {
+  // Images Start Here
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  if (images !== undefined) {
+    // Deleting Images From Cloudinary
+    for (let i = 0; i < pettoy.images.length; i++) {
+      await cloudinary.v2.uploader.destroy(pettoy.images[i].public_id);
+    }
+
+    const imagesLinks = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "pettoy",
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.images = imagesLinks;
+  }
+  pettoy = await Pettoy.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
   });
   res.status(200).json({
     success: true,
- pettoy,
+    pettoy,
   });
 });
 

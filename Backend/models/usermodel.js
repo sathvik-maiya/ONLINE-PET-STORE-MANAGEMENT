@@ -25,15 +25,10 @@ const userschema = new mongoose.Schema({
     minLength: [8, "password should have more than 8 characters"],
     select: false,
   },
-  avatar: {
-    public_id: {
-      type: String,
-      required: true,
-    },
-    url: {
-      type: String,
-      required: true,
-    },
+  phonenumber:{
+       type: Number,
+       required:[true,"please enter your phone number"],
+       unique:true,
   },
   role: {
     type: String,

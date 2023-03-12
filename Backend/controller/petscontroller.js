@@ -1,12 +1,37 @@
 const Pet = require("../models/petsmodel.js");
 const ErrorHandler = require("../utils/errorhandler");
+const cloudinary = require("cloudinary");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 
 
 // Create Pets -- Admin
 exports.createpet = catchasyncerrors(async (req, res, next) => {
-    req.body.user = req.user.id;
-  const pet = await Pet.create(req.body);
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  const imagesLinks = [];
+
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "pet",
+    });
+
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
+
+  req.body.images = imagesLinks;
+  req.body.user = req.user.id;
+
+const pet = await Pet.create(req.body);
+
   res.status(201).json({
     success: true,
     pet,
@@ -40,6 +65,37 @@ exports.updatepetdetails = catchasyncerrors(async (req, res, next) => {
   let pet = await Pet.findById(req.params.id);
   if (!pet) {
     return next(new ErrorHandler("pet not found", 404));
+  }
+
+  // Images Start Here
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  if (images !== undefined) {
+    // Deleting Images From Cloudinary
+    for (let i = 0; i < pet.images.length; i++) {
+      await cloudinary.v2.uploader.destroy(pet.images[i].public_id);
+    }
+
+    const imagesLinks = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "pet",
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.images = imagesLinks;
   }
   pet = await Pet.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

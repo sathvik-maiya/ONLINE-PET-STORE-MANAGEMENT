@@ -1,11 +1,36 @@
 const Petfood = require("../models/Petfoodmodel.js");
 const ErrorHandler = require("../utils/errorhandler");
+const cloudinary = require("cloudinary");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 
 // Create petfood -- Admin
 exports.createPetfood = catchasyncerrors(async (req, res, next) => {
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  const imagesLinks = [];
+
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "petfood",
+    });
+
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
+
+  req.body.images = imagesLinks;
   req.body.user = req.user.id;
-  const petfood = await Petfood.create(req.body);
+
+const petfood = await Petfood.create(req.body);
+
   res.status(201).json({
     success: true,
     petfood,
@@ -40,6 +65,38 @@ exports.updatePetfooddetails = catchasyncerrors(async (req, res, next) => {
   if (!petfood) {
     return next(new ErrorHandler("petfood not found", 404));
   }
+
+  // Images Start Here
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  if (images !== undefined) {
+    // Deleting Images From Cloudinary
+    for (let i = 0; i < petfood.images.length; i++) {
+      await cloudinary.v2.uploader.destroy(petfood.images[i].public_id);
+    }
+
+    const imagesLinks = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "petfood",
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.images = imagesLinks;
+  }
+
   petfood = await Petfood.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
