@@ -3,8 +3,6 @@ const {
   registeruser,
   loginuser,
   logout,
-  forgotpassword,
-  resetpassword,
   getuserdetail,
   updatepassword,
   updateprofile,

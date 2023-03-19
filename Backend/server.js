@@ -1,7 +1,10 @@
-const app=require("./app");
-const dotenv=require("dotenv");
+const app = require("./app");
+const dotenv = require("dotenv");
 const cloudinary = require("cloudinary");
-const connectDatabase=require("./config/database");
+const connectDatabase = require("./config/database");
+const serviceRoute = require("./service");
+const snippetsRoute = require("./snippets");
+const express = require("express");
 
 //handling uncaught exception
 process.on("uncaughtException", (err) => {
@@ -11,9 +14,7 @@ process.on("uncaughtException", (err) => {
 });
 
 //config
-dotenv.config({path:"backend/config/config.env"});
-
-
+dotenv.config({ path: "backend/config/config.env" });
 
 //connecting to database
 connectDatabase();
@@ -24,11 +25,26 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
-
- const server=app.listen(process.env.PORT,()=>{
-    console.log(`server is working on http://localhost:${process.env.PORT}`);
+const server = app.listen(process.env.PORT, () => {
+  console.log(`server is working on http://localhost:${process.env.PORT}`);
 });
+
+app.use("/", express.static(__dirname + "/webpage"));
+
+app.use(express.json());
+
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/webpage/index.html");
+});
+
+app.post("/", function (req, res) {
+  res.sendFile(__dirname + "/webpage/index.html");
+  res.send("Success!!!");
+});
+
+app.use("/", snippetsRoute);
+app.use("/service", serviceRoute);
+
 
 
 //unhandled promise rejection

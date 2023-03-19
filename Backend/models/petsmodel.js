@@ -18,10 +18,6 @@ const petSchema = new mongoose.Schema({
     required: [true, "please enter pet price"],
     maxLength: [8, "price cannot exceed 8 figures"],
   },
-  ratings: {
-    type: Number,
-    default: 0,
-  },
   images: [
     {
       public_id: {
@@ -29,31 +25,6 @@ const petSchema = new mongoose.Schema({
         required: true,
       },
       url: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
-  numofreviews: {
-    type: Number,
-    default: 0,
-  },
-  reviews: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
-        required: true,
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-      rating: {
-        type: Number,
-        required: true,
-      },
-      comment: {
         type: String,
         required: true,
       },

@@ -37,35 +37,6 @@ const petfoodSchema = new mongoose.Schema({
     required: [true, "please enter price"],
     maxLength: [8, "price cannot exceed 8 figures"],
   },
-  numofreviews: {
-    type: Number,
-    default: 0,
-  },
-  ratings: {
-    type: Number,
-    default: 0,
-  },
-  reviews: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
-        required: true,
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-      rating: {
-        type: Number,
-        required: true,
-      },
-      comment: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",

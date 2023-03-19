@@ -43,34 +43,29 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
-      image: {
-        type: String,
-        required: true,
-      },
       product: {
-        type: mongoose.Schema.ObjectId,
-        ref: "Product",
-        required: true,
+        petfood: {
+          type: mongoose.Schema.ObjectId,
+          ref: "petfood"
+        },
+        petmedicine: {
+          type: mongoose.Schema.ObjectId,
+          ref: "petmedicine"
+        },
+        pettoy: {
+          type: mongoose.Schema.ObjectId,
+          ref: "PetToy"
+        },
+        pet: {
+          type: mongoose.Schema.ObjectId,
+          ref: "pet"
+        },
       },
     },
   ],
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "user",
-    required: true,
-  },
-  paymentInfo: {
-    id: {
-      type: String,
-      required: true,
-    },
-    status: {
-      type: String,
-      required: true,
-    },
-  },
-  paidAt: {
-    type: Date,
     required: true,
   },
   itemsPrice: {
@@ -93,12 +88,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
-  orderStatus: {
-    type: String,
-    required: true,
-    default: "Processing",
-  },
-  deliveredAt: Date,
+  
   createdAt: {
     type: Date,
     default: Date.now,

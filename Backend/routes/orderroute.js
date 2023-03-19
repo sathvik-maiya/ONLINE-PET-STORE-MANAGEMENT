@@ -4,7 +4,6 @@ const {
   getsingleorder,
   myorders,
   getallorders,
-  updateorder,
   deleteorder,
 } = require("../controller/ordercontroller");
 const router = express.Router();
@@ -23,7 +22,6 @@ router
 
 router
   .route("/admin/order/:id")
-  .put(isauthenticateduser, authorizeroles("admin"), updateorder)
   .delete(isauthenticateduser, authorizeroles("admin"), deleteorder);
 
 module.exports = router;
