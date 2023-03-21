@@ -94,22 +94,6 @@ router.get("/petdescription", function(req, res) {
     res.sendFile(path.resolve('webpage/snippets/petdescription.html'));
 });
 
-router.get("/admin/petdescription", function(req, res) {
-    res.sendFile(path.resolve('webpage/snippets/adminpetdescription.html'));
-});
-
-router.get("/admin/fooddescription", function(req, res) {
-    res.sendFile(path.resolve('webpage/snippets/adminfooddescription.html'));
-});
-
-router.get("/admin/meddescription", function(req, res) {
-    res.sendFile(path.resolve('webpage/snippets/adminmeddescription.html'));
-});
-router.get("/admin/toydescription", function(req, res) {
-    res.sendFile(path.resolve('webpage/snippets/admintoydescription.html'));
-});
-
-
 router.get("/meddescription", function(req, res) {
     res.sendFile(path.resolve('webpage/snippets/meddescription.html'));
 });

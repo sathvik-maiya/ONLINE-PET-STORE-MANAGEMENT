@@ -44,25 +44,7 @@ const loadFoodItems = () => {
      })
 };
 
-const loadFoodDescription = (e) => {
-    getServiceById('petfood', e.target.value)
-	.then(data => {
-		loadSnippet('/admin/fooddescription')
-		.then((res) => {
-			let html = utils.insertProperty(res, 'id', data.petfood._id);
-			html = utils.insertProperty(html, 'name', data.petfood.foodname);
-			html = utils.insertProperty(html, 'brand', data.petfood.brand);
-			html = utils.insertProperty(html, 'price', data.petfood.price);
-			html = utils.insertProperty(html, 'flavor', data.petfood.flavor);
-			html = utils.insertProperty(html, 'description', data.petfood.description);
-            if(data.petfood.images.length > 0)
-                html = utils.insertProperty(html, 'image', data.petfood.images[0].url);
-			utils.insertHtml('#main-content', html);
-		})
-		.then(res => {
-		});
-	})
-}
+
 
 const loadFoodFilter = () => {
     fetch(utils.apiurl + '/petfood/getflavors')
@@ -319,26 +301,7 @@ const loadMeditems = function() {
     });
 };
 
-const loadMedDescription = (e) => {
-    getServiceById('petmedicine', e.target.value)
-        .then(data => {
-            loadSnippet('/admin/meddescription')
-                .then((res) => {
-                    let html = utils.insertProperty(res, 'id', data.petmedicine._id);
-                    html = utils.insertProperty(html, 'name', data.petmedicine.medname);
-                    html = utils.insertProperty(html, 'brand', data.petmedicine.brand);
-                    html = utils.insertProperty(html, 'price', data.petmedicine.price);
-                    html = utils.insertProperty(html, 'dosage', data.petmedicine.dosage);
-                    html = utils.insertProperty(html, 'description', data.petmedicine.description);
-                    if(data.petmedicine.images.length > 0)
-                         html = utils.insertProperty(html, 'image', data.petmedicine.images[0].url);
-                    utils.insertHtml('#main-content', html);
-                })
-                .then(res => {
-
-                });
-        })
-    }                     
+                    
 var images = [];
 
 const loadCreatePetmed = () => {
@@ -501,26 +464,7 @@ const loadPetToyItems = () => {
      })
 };
 
-const loadPetToyDescription = (e) => {
-    getServiceById('pettoy', e.target.id)
-	.then(data => {
-		loadSnippet('admin/toydescription')
-		.then((res) => {
-			let html = utils.insertProperty(res, 'id', data.pettoy._id);
-			html = utils.insertProperty(html, 'name', data.pettoy.Toyname);
-			html = utils.insertProperty(html, 'brand', data.pettoy.brand);
-			html = utils.insertProperty(html, 'price', data.pettoy.price);
-			html = utils.insertProperty(html, 'description', data.pettoy.description);
-            if(data.pettoy.images.length > 0)
-               html = utils.insertProperty(html, 'image', data.pettoy.images[0].url);
-			utils.insertHtml('#main-content', html);
-		})
-		
-			.then(res => {
 
-            });
-	})
-}
 
 const loadPetToyFilter = () => {
     fetch(utils.apiurl + '/pettoy/getpetClass')
@@ -725,24 +669,7 @@ const loadPetItems = () => {
      })
 };
 
-const loadPetDescription = (e) => {
-    getServiceById('pet', e.target.value)
-	.then(data => {
-		loadSnippet('/admin/petdescription')
-		.then((res) => {
-			let html = utils.insertProperty(res, 'id', data.pet._id);
-			html = utils.insertProperty(html, 'name', data.pet.petClass);
-			html = utils.insertProperty(html, 'brand', data.pet.breed);
-			html = utils.insertProperty(html, 'price', data.pet.price);
-			html = utils.insertProperty(html, 'description', data.pet.description); 
-            if(data.pet.images.length > 0)
-                html = utils.insertProperty(html, 'image', data.pet.images[0].url);
-			utils.insertHtml('#main-content', html);
-		})
-		.then(res => {	
-		});
-	})
-}
+
 
 const loadPetFilter = () => {
     fetch(utils.apiurl + '/pets/getbreeds')

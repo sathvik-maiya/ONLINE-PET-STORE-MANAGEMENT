@@ -4,7 +4,7 @@ let cart;
 //petfood starts from here
 
 const loadPetFood = function () {
-  //  showLoading('#main-content', 'var(--primary-accent)', 5);
+ 
   fetch("/service/petfood", {
     method: "GET",
   })
@@ -14,7 +14,7 @@ const loadPetFood = function () {
       utils.onclickEvent("#btn-filter-petfood", loadFoodItems);
       loadFoodFilter();
       loadFoodItems();
-      // loaddescription
+    
     });
 };
 
@@ -306,7 +306,7 @@ const loadPetToyDescription = (e) => {
         html = utils.insertProperty(html, "name", data.pettoy.Toyname);
         html = utils.insertProperty(html, "brand", data.pettoy.brand);
         html = utils.insertProperty(html, "price", data.pettoy.price);
-     html = utils.insertProperty(
+        html = utils.insertProperty(
           html,
           "description",
           data.pettoy.description
@@ -680,8 +680,8 @@ const updateprofile = (res) => {
     email: $("#email").val(),
     phonenumber: parseInt($("#phonenumber").val()),
   };
- 
-  fetch(utils.apiurl + "/me/update", {
+
+  fetch(utils.apiurl + "/update", {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -692,7 +692,6 @@ const updateprofile = (res) => {
   })
     .then((res) => res.json())
     .then((res) => {
-   
       loadSnippet("/service/me").then((res) => {
         utils.insertHtml("#main-content", res);
       });
@@ -711,9 +710,10 @@ const loadupdateprofile = (e) => {
       },
     }).then((res) => {
       var html;
-      html = utils.insertProperty(res, "id", user.id);
-      html = utils.insertProperty(html, "name", user.name);
-      html = utils.insertProperty(html, "phone", user.phonenumber);
+      html = utils.insertProperty(res, "id", res.user);
+      html = utils.insertProperty(html, "name", res.user.name);
+      console.log(res.user.name);
+      html = utils.insertProperty(html, "phone", res.user.phonenumber);
       // show image
     });
 
