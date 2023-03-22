@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const errormiddleware = require("./middleware/error");
 const cookieparser = require("cookie-parser");
+const bodyparser = require("body-parser");
 const cors = require("cors");
 
 app.use(
@@ -11,7 +12,7 @@ app.use(
   })
 );
 app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieparser());
 
 //route imports

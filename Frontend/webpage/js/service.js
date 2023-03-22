@@ -4,7 +4,6 @@ let cart;
 //petfood starts from here
 
 const loadPetFood = function () {
- 
   fetch("/service/petfood", {
     method: "GET",
   })
@@ -14,7 +13,6 @@ const loadPetFood = function () {
       utils.onclickEvent("#btn-filter-petfood", loadFoodItems);
       loadFoodFilter();
       loadFoodItems();
-    
     });
 };
 
@@ -507,12 +505,23 @@ const placeOrder = async () => {
       });
 
       let res = await getServiceById(key, element.id);
-      order.itemsPrice += res[key].price;
+      if (key == "pet") {
+        order.itemsPrice += res.pet.price;
+      } else if (key == "petfood") {
+        order.itemsPrice += res.petfood.price;
+      } else if (key == "petmedicine") {
+        order.itemsPrice += res.petmedicine.price;
+      } else if (key == "pettoy") {
+        order.itemsPrice += res.pettoy.price;
+      }
     }
   }
   order.taxPrice = (order.itemsPrice * 18) / 100;
   order.shippingPrice = 50 + (order.itemsPrice * 2) / 100;
-  order.totalPrice = order.itemsPrice + order.taxPrice + order.shippingPrice;
+  order.totalPrice =
+    Math.round(
+      (order.itemsPrice + order.taxPrice + order.shippingPrice) * 100
+    ) / 100;
   await loadData("/order/new", order);
   localStorage.removeItem("cart");
   resetCart();
@@ -524,6 +533,8 @@ const loadOrder = async () => {
         <td>{{#}}</td>
         <td>{{item}}</td>
         <td>{{address}}</td>
+        <td>{{tax-price}}</td>
+        <td>{{shipping-price}}</td>
         <td>{{amount}}</td>
         </tr>`,
     html,
@@ -540,16 +551,19 @@ const loadOrder = async () => {
     html = utils.insertProperty(snippet, "#", i + 1);
     item = `<ol>`;
     for (let orderItem of order.orderItems) {
-      let key = Object.keys(orderItem.product)[0];
-      let row = await getServiceById("/" + key, orderItem.product[key]);
+      let key = Object.keys(orderItem.product);
+      let row = await getServiceById(key, orderItem.product[key]);
+      var JSON_Obj = row;
+      for (var w in JSON_Obj) {
+      }
       if (key == "petfood")
-        item += `<li>${row[key].foodname} ${row[key].brand}</li>`;
+        item += `<li>${JSON_Obj[key].foodname} ${JSON_Obj[key].brand}</li>`;
       else if (key == "petmedicine")
-        item += `<li>${row[key].medname} ${row[key].brand}</li>`;
+        item += `<li>${JSON_Obj[key].medname} ${JSON_Obj[key].brand}</li>`;
       else if (key == "pettoy")
-        item += `<li>${row[key].Toyname} ${row[key].brand}</li>`;
+        item += `<li>${JSON_Obj[key].Toyname} ${JSON_Obj[key].brand}</li>`;
       else if (key == "pet")
-        item += `<li>${row[key].breed} ${row[key].petClass}</li>`;
+        item += `<li>${JSON_Obj[key].breed} ${JSON_Obj[key].petClass}</li>`;
     }
     item += `</ol>`;
     html = utils.insertProperty(html, "item", item);
@@ -558,11 +572,12 @@ const loadOrder = async () => {
       "address",
       `${order.shippingInfo.address}, ${order.shippingInfo.city}, ${order.shippingInfo.state} - ${order.shippingInfo.pinCode}, ${order.shippingInfo.country}<br /> Phone: ${order.shippingInfo.phoneNo}`
     );
+    html = utils.insertProperty(html, "tax-price", order.taxPrice);
+    html = utils.insertProperty(html, "shipping-price", order.shippingPrice);
     html = utils.insertProperty(html, "amount", order.totalPrice);
     utils.appendHtml("#order-table", html);
   }
 };
-
 const getItemIndex = (arr, id) => {
   let index = -1;
   arr.every((element, i) => {
@@ -578,35 +593,34 @@ const getItemIndex = (arr, id) => {
 const loadCart = () => {
   loadSnippet("/cart").then((res) => {
     let snippet = `<tr>
-						<td>{{name}}</td>
+						<td >{{name}}</td>
 						<td>{{brand}}</td>
 						<td>{{quantity}}</td>
-						</tr>`,
+           	</tr>`,
       html; // add/remove item in cart
     utils.insertHtml("#main-content", res);
     Object.keys(cart).forEach((key, index) => {
       cart[key].forEach((element, index) => {
         getServiceById(key, element.id).then((res) => {
+          var JSON_Obj = res;
+          for (var key in JSON_Obj) {
+          }
           if (key == "petfood") {
-            html = utils.insertProperty(snippet, "name", res[key].foodname);
-            html = utils.insertProperty(html, "brand", res[key].brand);
-          } else if (key == "petmedicine") {
             html = utils.insertProperty(
               snippet,
               "name",
-              res["petmedicine"].medname
+              JSON_Obj[key].foodname
             );
-            html = utils.insertProperty(
-              html,
-              "brand",
-              res["petmedicine"].brand
-            );
+            html = utils.insertProperty(html, "brand", JSON_Obj[key].brand);
+          } else if (key == "petmedicine") {
+            html = utils.insertProperty(snippet, "name", JSON_Obj[key].medname);
+            html = utils.insertProperty(html, "brand", JSON_Obj[key].brand);
           } else if (key == "pettoy") {
-            html = utils.insertProperty(snippet, "name", res[key].Toyname);
-            html = utils.insertProperty(html, "brand", res[key].brand);
+            html = utils.insertProperty(snippet, "name", JSON_Obj[key].Toyname);
+            html = utils.insertProperty(html, "brand", JSON_Obj[key].brand);
           } else if (key == "pet") {
-            html = utils.insertProperty(snippet, "name", res[key].breed);
-            html = utils.insertProperty(html, "brand", res[key].petClass);
+            html = utils.insertProperty(snippet, "name", JSON_Obj[key].breed);
+            html = utils.insertProperty(html, "brand", JSON_Obj[key].petClass);
           }
           html = utils.insertProperty(html, "quantity", element.quantity);
           utils.appendHtml("#cart-table", html);
@@ -614,9 +628,9 @@ const loadCart = () => {
       });
     });
     utils.onclickEvent("#btn-placeorder", loadPlaceOrder);
+    
   });
 };
-
 const getServiceById = (route, id) => {
   return fetch(`${utils.apiurl}/${route}/${id}`).then((data) => data.json());
 };
@@ -644,6 +658,11 @@ const logout = () => {
     method: "GET",
     credentials: "include",
   }).then((res) => (window.location.href = "/"));
+};
+const s4 = () => {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
 };
 
 const resetCart = () => {
@@ -712,7 +731,6 @@ const loadupdateprofile = (e) => {
       var html;
       html = utils.insertProperty(res, "id", res.user);
       html = utils.insertProperty(html, "name", res.user.name);
-      console.log(res.user.name);
       html = utils.insertProperty(html, "phone", res.user.phonenumber);
       // show image
     });

@@ -741,12 +741,9 @@ const loadUpdatePet = (e) => {
         utils.insertHtml('#main-content', res);
         getServiceById('pet', e.target.value)
         .then(data => {
-            // show image
-            // $('#foodname').val(data.petfood.foodname),
             $('#breed').val(data.pet.breed),
             $('#petClass').val(data.pet.petClass),
             $('#description').val(data.pet.description),
-            // $('#flavor').val(data.petfood.flavor),
             $('#price').val(data.pet.price)
         });
         $('#btn-create').html('Update');
@@ -757,13 +754,11 @@ const loadUpdatePet = (e) => {
 
 const createPet = () => {
     const data = {
-        images: images,
-        // foodname: $('#foodname').val(),
-        breed: $('#breed').val(),
-        petClass: $('#petClass').val(),
-        description: $('#description').val(),
-        // flavor: $('#flavor').val(),
-        price: parseFloat($('#price').val())
+      breed: $("#breed").val(),
+      petClass: $("#petClass").val(),
+      description: $("#description").val(),
+      price: parseFloat($("#price").val()),
+      images: images,
     };
   
     fetch(utils.apiurl + '/admin/pet/new', {

@@ -8,12 +8,13 @@ body{
     background-color: yellow;
     background-size: cover;
     font-family: sans-serif;
+    
 }
 .login{
    
-    width:74vw;
+    width:34vw;
     padding-top: 6%;
-    padding-left: 40%;
+    padding-left: 60%;
     left: calc(50%-50px);
     top: calc(50%-50px);
     overflow-y: hidden;

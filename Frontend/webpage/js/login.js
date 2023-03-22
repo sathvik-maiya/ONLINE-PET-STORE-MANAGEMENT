@@ -33,3 +33,4 @@ $(() => {
     utils.onclickEvent('#btn-login', login);
     utils.onclickEvent('#signup-link', loadSignup);
 });
+

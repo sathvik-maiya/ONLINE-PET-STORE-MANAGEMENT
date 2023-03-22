@@ -28,10 +28,6 @@ router.get("/petmedicine", function (req, res) {
   res.sendFile(path.resolve("webpage/snippets/petmed.html"));
 });
 
-router.get("/me", function (req, res) {
-  res.sendFile(path.resolve("webpage/snippets/me.html"));
-});
-
 router.get("/pettoy", function (req, res) {
   res.sendFile(path.resolve("webpage/snippets/pettoy.html"));
 });
