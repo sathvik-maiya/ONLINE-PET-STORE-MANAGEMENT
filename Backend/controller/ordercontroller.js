@@ -31,3 +31,14 @@ exports.newOrder = catchasyncerrors(async (req, res, next) => {
     order,
   });
 });
+
+// get logged in user  Orders
+exports.myorders = catchasyncerrors(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user._id });
+
+  res.status(200).json({
+    success: true,
+    orders,
+  });
+});
+
