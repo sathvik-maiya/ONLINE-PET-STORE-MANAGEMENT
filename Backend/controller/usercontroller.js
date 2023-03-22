@@ -72,3 +72,13 @@ exports.updateprofile = catchasyncerrors(async (req, res, next) => {
     success: true,
   });
 });
+
+
+//get all users(admin)
+exports.getallusers = catchasyncerrors(async (req, res, next) => {
+  const users = await User.find();
+  res.status(200).json({
+    success: true,
+    users,
+  });
+});
