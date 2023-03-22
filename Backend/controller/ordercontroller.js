@@ -3,7 +3,6 @@ const ErrorHandler = require("../utils/errorhandler");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 
 // Create new Order
-
 exports.newOrder = catchasyncerrors(async (req, res, next) => {
   const {
     shippingInfo,
@@ -32,4 +31,3 @@ exports.newOrder = catchasyncerrors(async (req, res, next) => {
     order,
   });
 });
-

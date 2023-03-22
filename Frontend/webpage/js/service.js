@@ -689,18 +689,47 @@ $(() => {
     () => (window.location.href = "/dashboard.html")
   );
   utils.onclickEvent("#myorder", loadOrder);
-  utils.onclickEvent("#profile", loadupdateprofile);
+  utils.onclickEvent("#profile", loaduserprofile);
   utils.onclickEvent("#logout", logout);
 });
 
-const updateprofile = (res) => {
+
+const loadupdateprofile = (e) => {
+  loadSnippet("service/userprofile").then((res) => {
+    utils.insertHtml("#main-content", res);
+  });
+  fetch(utils.apiurl + "/me", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then(function (response) {
+      const data = response.json();
+      return data;
+    })
+    .then((data) => {
+      $("#username").prop("readonly", false);
+      $("#email").prop("readonly", false);
+      $("#password").prop("readonly", false);
+      $("#phonenumber").prop("readonly", false);
+      $("#username").val(data.user.name),
+        $("#email").val(data.user.email),
+        $("#phonenumber").val(data.user.phonenumber);
+        $(`#btn-upd`).hide();
+      utils.onclickEvent("#btn-apply", updateprofile);
+    });
+};
+
+const updateprofile = () => {
   const data = {
-    foodname: $("#name").val(),
+    name: $("#username").val(),
     email: $("#email").val(),
     phonenumber: parseInt($("#phonenumber").val()),
   };
-
-  fetch(utils.apiurl + "/update", {
+  fetch(utils.apiurl + "/me/update", {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -711,32 +740,38 @@ const updateprofile = (res) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      loadSnippet("/service/me").then((res) => {
+        loadSnippet("service/userprofile").then((res) => {
         utils.insertHtml("#main-content", res);
+        loaduserprofile();
       });
     });
 };
 
-const loadupdateprofile = (e) => {
-  loadSnippet("service/me").then((res) => {
-    utils.insertHtml("#main-content", res);
-    fetch(utils.apiurl + "/me", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }).then((res) => {
-      var html;
-      html = utils.insertProperty(res, "id", res.user);
-      html = utils.insertProperty(html, "name", res.user.name);
-      html = utils.insertProperty(html, "phone", res.user.phonenumber);
-      // show image
+const loaduserprofile = async (e) => {
+  fetch(utils.apiurl + "/me", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then(function (response) {
+      const data = response.json();
+      return data;
+    })
+    .then((data) => {
+      
+     
+      loadSnippet("service/userprofile").then((res) => {
+        let html = utils.insertProperty(res, "id", data.user._id);
+        html = utils.insertProperty(html, "name", data.user.name);
+        html = utils.insertProperty(html, "email", data.user.email);
+        html = utils.insertProperty(html, "password", data.user.password);
+        html = utils.insertProperty(html, "phonenumber", data.user.phonenumber);
+        utils.insertHtml("#main-content", html);
+        utils.onclickEvent("#btn-upd", loadupdateprofile);
+        $('#btn-apply').hide();
+      });
     });
-
-    $("#btn-create").html("Update");
-    $("#btn-create").attr("value", e.target.value);
-    utils.onclickEvent("#btn-create", updateprofile);
-  });
 };

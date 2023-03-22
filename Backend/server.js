@@ -45,8 +45,6 @@ app.post("/", function (req, res) {
 app.use("/", snippetsRoute);
 app.use("/service", serviceRoute);
 
-
-
 //unhandled promise rejection
 process.on("unhandledRejection", (err) => {
   console.log(`Error:${err.message}`);

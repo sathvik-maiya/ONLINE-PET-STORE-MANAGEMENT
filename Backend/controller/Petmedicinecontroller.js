@@ -37,16 +37,16 @@ exports.createpetmedicine = catchasyncerrors(async (req, res, next) => {
   });
 });
 
-//Get all petfood
+//Get all petmedicine
 exports.getallpetmedicine = catchasyncerrors(async (req, res, next) => {
-const petmedicine = await Petmedicine.find();
+  const petmedicine = await Petmedicine.find();
   res.status(200).json({
     success: true,
     petmedicine,
   });
 });
 
-//get single petfood details
+//get single petmedicine details
 exports.getpetmedicinedetails = catchasyncerrors(async (req, res, next) => {
   let petmedicine = await Petmedicine.findById(req.params.id);
   if (!petmedicine) {
@@ -59,7 +59,7 @@ exports.getpetmedicinedetails = catchasyncerrors(async (req, res, next) => {
   });
 });
 
-//update petfood details--admin
+//update petmedicine details--admin
 exports.updatepetmedicinedetails = catchasyncerrors(async (req, res, next) => {
   let petmedicine = await Petmedicine.findById(req.params.id);
   if (!petmedicine) {
@@ -107,7 +107,7 @@ exports.updatepetmedicinedetails = catchasyncerrors(async (req, res, next) => {
   });
 });
 
-//delete petfood--admin
+//delete petmedcine--admin
 exports.deletepetmedicine = catchasyncerrors(async (req, res, next) => {
   let petmedicine = await Petmedicine.findById(req.params.id);
   if (!petmedicine) {

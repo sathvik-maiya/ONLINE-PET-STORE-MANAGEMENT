@@ -15,6 +15,4 @@ router
   .delete(isauthenticateduser, authorizeroles("admin"), deletePetfood);
 router.route("/petfood/:id").get(getPetfooddetails);
     
-
-
 module.exports = router;

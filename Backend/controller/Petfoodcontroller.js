@@ -6,15 +6,12 @@ const catchasyncerrors = require("../middleware/catchasyncerrors");
 // Create petfood -- Admin
 exports.createPetfood = catchasyncerrors(async (req, res, next) => {
   let images = [];
-
   if (typeof req.body.images === "string") {
     images.push(req.body.images);
   } else {
     images = req.body.images;
   }
-
   const imagesLinks = [];
-
   for (let i = 0; i < images.length; i++) {
     const result = await cloudinary.v2.uploader.upload(images[i], {
       folder: "petfood",
@@ -36,6 +33,7 @@ exports.createPetfood = catchasyncerrors(async (req, res, next) => {
     petfood,
   });
 });
+
 //Get all petfood
 exports.getallPetfood = catchasyncerrors(async (req, res, next) => {
   var filter = {};

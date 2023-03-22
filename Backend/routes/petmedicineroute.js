@@ -4,12 +4,10 @@ const {
   createpetmedicine,
   updatepetmedicinedetails,
   getpetmedicinedetails,
-
   deletepetmedicine,
 } = require("../controller/Petmedicinecontroller");
 const { isauthenticateduser, authorizeroles } = require("../middleware/auth");
 const router = express.Router();
-
 
 router.route("/petmedicine").post(getallpetmedicine);
 router
@@ -20,6 +18,5 @@ router
   .put(isauthenticateduser, authorizeroles("admin"), updatepetmedicinedetails)
   .delete(isauthenticateduser, authorizeroles("admin"), deletepetmedicine);
 router.route("/petmedicine/:id").get(getpetmedicinedetails);
-
 
 module.exports = router;

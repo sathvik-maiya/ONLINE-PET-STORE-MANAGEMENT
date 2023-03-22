@@ -3,7 +3,6 @@ const ErrorHandler = require("../utils/errorhandler");
 const cloudinary = require("cloudinary");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 
-
 // Create Pets -- Admin
 exports.createpet = catchasyncerrors(async (req, res, next) => {
   let images = [];
@@ -30,7 +29,7 @@ exports.createpet = catchasyncerrors(async (req, res, next) => {
   req.body.images = imagesLinks;
   req.body.user = req.user.id;
 
-const pet = await Pet.create(req.body);
+  const pet = await Pet.create(req.body);
 
   res.status(201).json({
     success: true,
@@ -40,22 +39,21 @@ const pet = await Pet.create(req.body);
 
 //Get all pets
 exports.getallpets = catchasyncerrors(async (req, res, next) => {
-
-  var filter = {}
+  var filter = {};
   if (req.body.price.length != 0)
     filter.price = {
       $gte: req.body.price[0],
-      $lte: req.body.price[1]
-    }
+      $lte: req.body.price[1],
+    };
   if (req.body.breed.length != 0)
     filter.breed = {
-      $in: req.body.breed
-    }
-  
+      $in: req.body.breed,
+    };
+
   if (req.body.petClass.length != 0)
     filter.petClass = {
-      $in: req.body.petClass
-    }
+      $in: req.body.petClass,
+    };
   const pets = await Pet.find(filter);
   res.status(200).json({
     success: true,
@@ -67,7 +65,7 @@ exports.getBreeds = catchasyncerrors(async (req, res, next) => {
   const breeds = await Pet.distinct("breed");
   res.status(200).json({
     success: true,
-    breeds: breeds
+    breeds: breeds,
   });
 });
 
@@ -75,16 +73,16 @@ exports.getPetClass = catchasyncerrors(async (req, res, next) => {
   const petClass = await Pet.distinct("petClass");
   res.status(200).json({
     success: true,
-    petClass: petClass
+    petClass: petClass,
   });
 });
 
 //get single pet details
 exports.getpetdetails = catchasyncerrors(async (req, res, next) => {
   let pet = await Pet.findById(req.params.id);
-   if (!pet) {
-     return next(new ErrorHandler("pet not found", 404));
-   }
+  if (!pet) {
+    return next(new ErrorHandler("pet not found", 404));
+  }
 
   res.status(200).json({
     success: true,
@@ -140,19 +138,15 @@ exports.updatepetdetails = catchasyncerrors(async (req, res, next) => {
   });
 });
 
-
-
 //delete pet--admin
 exports.deletepet = catchasyncerrors(async (req, res, next) => {
   let pet = await Pet.findById(req.params.id);
   if (!pet) {
     return next(new ErrorHandler("pet not found", 404));
   }
- await pet.remove();
+  await pet.remove();
   res.status(200).json({
     success: true,
     message: "pet deleted successfully",
   });
 });
-
-

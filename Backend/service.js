@@ -10,6 +10,14 @@ router.get("/pets", function (req, res) {
   res.sendFile(path.resolve("webpage/snippets/pets.html"));
 });
 
+router.get("/petmedicine", function (req, res) {
+  res.sendFile(path.resolve("webpage/snippets/petmed.html"));
+});
+
+router.get("/pettoy", function (req, res) {
+  res.sendFile(path.resolve("webpage/snippets/pettoy.html"));
+});
+
 router.get("/admin/petfood", function (req, res) {
   res.sendFile(path.resolve("webpage/snippets/adminpetfood.html"));
 });
@@ -22,14 +30,6 @@ router.get("/admin/pettoy", function (req, res) {
 });
 router.get("/admin/pet", function (req, res) {
   res.sendFile(path.resolve("webpage/snippets/adminpets.html"));
-});
-
-router.get("/petmedicine", function (req, res) {
-  res.sendFile(path.resolve("webpage/snippets/petmed.html"));
-});
-
-router.get("/pettoy", function (req, res) {
-  res.sendFile(path.resolve("webpage/snippets/pettoy.html"));
 });
 
 module.exports = router;

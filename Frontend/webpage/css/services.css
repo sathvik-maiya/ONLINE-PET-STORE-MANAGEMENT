@@ -684,6 +684,14 @@ span {
 	margin-top: 15px;
 	padding-left: 90px;
 }
+.title8 {
+	color: whitesmoke;
+	font-family: sans-serif;
+	font-size: 36px;
+	font-weight: 600;
+	margin-top: 15px;
+	padding-left: 100px;
+}
 .title2 {
 	color: whitesmoke;
 	font-family: sans-serif;
@@ -741,6 +749,10 @@ span {
 
 .impl{
 	padding-left: 40px;
+	padding-top: 30px;
+}
+.impl8 {
+	padding-left: 35px;
 	padding-top: 30px;
 }
 .imp2 {
@@ -870,3 +882,27 @@ body {
 	width: 250px;
 }
 
+.f8{
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	height: 100vh;
+	position: absolute;
+	top:70px;
+	right:450px;
+		
+}
+
+
+
+
+.form8{
+	background-color: #6e6ef8;
+	border-radius: 20px;
+	box-sizing: border-box;
+	height: 420px;
+	padding: 20px;
+	width: 400px;
+	padding-top: 30px;
+	
+}

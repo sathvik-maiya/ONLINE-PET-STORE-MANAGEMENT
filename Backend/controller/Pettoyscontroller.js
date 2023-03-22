@@ -1,41 +1,40 @@
-const Pettoy =  require("../models/Pettoymodel.js");
+const Pettoy = require("../models/Pettoymodel.js");
 const ErrorHandler = require("../utils/errorhandler");
 const cloudinary = require("cloudinary");
 const catchasyncerrors = require("../middleware/catchasyncerrors");
 
-
 // Create pettoy -- Admin
 exports.createpettoy = catchasyncerrors(async (req, res, next) => {
- let images = [];
+  let images = [];
 
- if (typeof req.body.images === "string") {
-   images.push(req.body.images);
- } else {
-   images = req.body.images;
- }
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
 
- const imagesLinks = [];
+  const imagesLinks = [];
 
- for (let i = 0; i < images.length; i++) {
-   const result = await cloudinary.v2.uploader.upload(images[i], {
-     folder: "pettoy",
-   });
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "pettoy",
+    });
 
-   imagesLinks.push({
-     public_id: result.public_id,
-     url: result.secure_url,
-   });
- }
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
 
- req.body.images = imagesLinks;
- req.body.user = req.user.id;
+  req.body.images = imagesLinks;
+  req.body.user = req.user.id;
 
-const pettoy = await Pettoy.create(req.body);
+  const pettoy = await Pettoy.create(req.body);
 
- res.status(201).json({
-   success: true,
-   pettoy,
- });
+  res.status(201).json({
+    success: true,
+    pettoy,
+  });
 });
 
 //Get all pettoy
@@ -80,9 +79,9 @@ exports.getPetClass = catchasyncerrors(async (req, res, next) => {
 //get single pettoy details
 exports.getpettoydetails = catchasyncerrors(async (req, res, next) => {
   let pettoy = await Pettoy.findById(req.params.id);
-   if (!pettoy) {
-     return next(new ErrorHandler("PetToys not found", 404));
-   }
+  if (!pettoy) {
+    return next(new ErrorHandler("PetToys not found", 404));
+  }
 
   res.status(200).json({
     success: true,
@@ -137,19 +136,15 @@ exports.updatepettoydetails = catchasyncerrors(async (req, res, next) => {
   });
 });
 
-
-
 //delete pettoy--admin
 exports.deletepettoy = catchasyncerrors(async (req, res, next) => {
   let pettoy = await Pettoy.findById(req.params.id);
   if (!pettoy) {
     return next(new ErrorHandler("PetToys not found", 404));
   }
- await pettoy.remove();
+  await pettoy.remove();
   res.status(200).json({
     success: true,
     message: "pettoys deleted successfully",
   });
 });
-
-

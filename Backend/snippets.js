@@ -108,7 +108,7 @@ router.get("/placeorder", function (req, res) {
 router.get("/myorder", function (req, res) {
   res.sendFile(path.resolve("webpage/snippets/myorder.html"));
 });
-router.get("/me", function (req, res) {
-  res.sendFile(path.resolve("webpage/snippets/me.html"));
+router.get("/userprofile", function (req, res) {
+  res.sendFile(path.resolve("webpage/snippets/userprofile.html"));
 });
 module.exports = router;

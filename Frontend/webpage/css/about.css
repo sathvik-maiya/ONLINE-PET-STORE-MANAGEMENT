@@ -1,5 +1,6 @@
 .background{
-    background-color: aquamarine;
+    background-color: grey;
+   
 }
 .firstsection {
     height: 100vh;
@@ -9,7 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: aquamarine;
+    background-color: grey;
     max-width: 50%;
     margin: auto;
     height: 90%;

@@ -37,5 +37,17 @@ utils.showLoading = function (selector, color, size) {
 	</div></div>`;
   insertHtml(selector, html);
 };
+$(() => {
+  utils.onclickEvent("#ab-s", loadabout);
+  utils.onclickEvent("#ab-c", loadcontact);
+});
+
+const loadabout = () => {
+  window.location.href = "/about.html";
+};
+
+const loadcontact = () => {
+  window.location.href = "/contact.html";
+};
 
 export default utils;
