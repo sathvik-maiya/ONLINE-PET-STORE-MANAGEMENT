@@ -1,5 +1,5 @@
 import utils from "./util.js";
-const apiurl = 'http://localhost:5000/api/v1';
+const apiurl = 'https://pet-store-backend-theta.vercel.app/api/v1';
 
 const logout = () => {
 	fetch(utils.apiurl + '/logout', {
