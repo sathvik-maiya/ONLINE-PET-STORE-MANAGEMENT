@@ -1,5 +1,5 @@
 var utils = {};
-utils.apiurl = "http://localhost:5000/api/v1";
+utils.apiurl = "https://pet-store-backend-theta.vercel.app/api/v1";
 
 utils.insertHtml = function (selector, html) {
   var targetElem = document.querySelector(selector);
